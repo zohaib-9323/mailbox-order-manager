@@ -1,26 +1,43 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* One palette for the whole tool: warm paper neutrals, ink text, a single deep green accent. */
+@theme {
+  --color-paper: #f7f6f3;
+  --color-surface: #ffffff;
+  --color-line: #e4e1da;
+  --color-line-strong: #cfcbc2;
+  --color-ink: #1d1c1a;
+  --color-ink-muted: #6b6860;
+  --color-ink-faint: #9a968c;
+
+  --color-accent: #1e5b47;
+  --color-accent-hover: #174a39;
+  --color-accent-soft: #e5efe9;
+
+  --color-pending: #8a6a1f;
+  --color-pending-soft: #f6eedb;
+  --color-provisioning: #2b5c8a;
+  --color-provisioning-soft: #e3ecf5;
+  --color-active: #1e6b45;
+  --color-active-soft: #e2f0e7;
+  --color-failed: #a23b2c;
+  --color-failed-soft: #f7e4e0;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-paper);
+  color: var(--color-ink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
