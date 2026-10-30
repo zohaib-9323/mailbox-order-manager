@@ -8,7 +8,7 @@
     "start": "next start",
     "worker": "tsx src/worker/main.ts",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "db:up": "docker compose up -d --wait",
     "db:down": "docker compose down",
     "db:generate": "drizzle-kit generate",

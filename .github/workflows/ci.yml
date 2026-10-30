@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: mailbox
+          POSTGRES_PASSWORD: mailbox
+          POSTGRES_DB: mailbox_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U mailbox" --health-interval 2s --health-timeout 3s --health-retries 20
+    env:
+      DATABASE_URL: postgres://mailbox:mailbox@localhost:5432/mailbox
+      TEST_DATABASE_URL: postgres://mailbox:mailbox@localhost:5432/mailbox_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test:unit
+      - run: npm run test:integration
+      - run: npm run build
