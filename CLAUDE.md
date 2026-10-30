@@ -33,9 +33,10 @@ Layering, top to bottom. A layer may only import from layers below it.
 | Providers | `src/server/providers/*` | Strategy implementations of `MailboxProvider` |
 | Worker | `src/worker/*` | process loop; calls the provisioning service |
 
-- Every order status change goes through `transitionOrder()` in `order-repository.ts`, which checks
+- Every order status change goes through `transitionOrder()` in `src/server/services/order-transitions.ts`, which checks
   `assertTransition()` from the domain state machine, does a conditional `UPDATE ... WHERE status = <from>`
-  and writes the `order_events` audit row in the same transaction. Never `UPDATE orders SET status` anywhere else.
+  (via `orderRepo.updateStatusIf`) and writes the `order_events` audit row in the caller's transaction.
+  Never change `orders.status` anywhere else.
 - Errors: throw an `AppError` subclass from `src/domain/errors.ts`. Route handlers wrap with
   `handleRoute()` which renders `{ error: { code, message, details? } }`. Do not build error JSON by hand.
 - Validation lives in `src/server/validation/*` (zod). Route handlers and services share these schemas.
